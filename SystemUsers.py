@@ -1,4 +1,6 @@
 import mysql.connector
+import pandas as pd
+
 c = 0
 cnx = mysql.connector.MySQLConnection(user='root',password='',host='localhost',
                                       database='PruebasPython',port='3306')
@@ -33,9 +35,8 @@ while (True):
     elif choice == 2:
         cursor.execute("select * from user")
         users = cursor.fetchall()
-        print("| ID | NAME | SURNAME | AGE |")
-        for user in users:
-            print(f"|{user[0]}     {user[1]}  {user[2]}  {user[3]}| ")
+        users_df = pd.DataFrame(users)
+        print(users_df)
     
     elif choice == 3:
         print("Write the Name or/and Surname")
