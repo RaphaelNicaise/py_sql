@@ -59,7 +59,7 @@ while (True):
         elif choice == 4:
             cursor.execute("SELECT avg(age) FROM pruebaspython.user")
             avg_age = cursor.fetchone()[0]
-            print(f"The average age is: {avg_age}")       
+            print(f"The average age is: {round(avg_age)}")       
         elif choice == 5:
                 print("Delete the user with the Complete Name & Surname")
                 
