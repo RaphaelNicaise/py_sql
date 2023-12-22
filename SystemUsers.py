@@ -11,8 +11,9 @@ while (True):
         print("Option 1 - Insert User")
         print("Option 2 - Select Users")
         print("Option 3 - Select Specific User ")
-        print("Option 4 - Delete a User")
-        print("Option 5 - Quit")
+        print("Option 4 - Average")
+        print("Option 5 - Delete a User")
+        print("Option 6 - Quit")
         choice = int(input("-> "))
         if choice == 1:
             print("Insert User ")
@@ -54,8 +55,11 @@ while (True):
                
             else:
                 print(f"There's no user like {var}")  
-            c = 0   
+            c = 0
         elif choice == 4:
+            avg_age = cursor.fetchone("SELECT avg(age) FROM pruebaspython.user")
+            print(f"The average age is: {avg_age[0]}")       
+        elif choice == 5:
                 print("Delete the user with the Complete Name & Surname")
                 
                 var = input("----> ")
@@ -71,7 +75,7 @@ while (True):
                     cnx.commit()
                     print(f"User {var} deleted") 
     
-        elif choice == 5:
+        elif choice == 6:
             print("You are leaving the program, Goodbye")
             break
     except ValueError:
