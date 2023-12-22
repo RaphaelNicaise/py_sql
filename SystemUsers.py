@@ -43,14 +43,18 @@ while (True):
             print("Write the Name or/and Surname")
             var = input("----> ")
             cursor.execute(f"SELECT * FROM pruebaspython.user where concat(name,' ',surname) like '%{var}%'")
-            if (cursor.rowcount+1) > 0: 
-                userslike = cursor.fetchall()
-                for user in userslike:
-                    c += 1
-                userslike_df = pd.DataFrame(userslike,columns=['ID','Name','Surname','Age']) 
+            userslike = cursor.fetchall()
+            for i in userslike:
+                c += 1
+            if (len(userslike)) > 0: 
+                userslike_df = pd.DataFrame(userslike, columns=['ID', 'Name', 'Surname', 'Age'])    
+                 
                 print(f"{c} Rows Returned")
                 print(userslike_df)
-                c=0
+               
+            else:
+                print(f"There's no user like {var}")  
+            c = 0   
         elif choice == 4:
                 print("Delete the user with the Complete Name & Surname")
                 
