@@ -9,17 +9,17 @@ cursor = cnx.cursor()
 cursor.execute("select distinct count(*) from products")
 q_products = cursor.fetchone()[0]
 
-def choose_random_product():
-    random_id_product = random.randint(1,q_products)
-    return random_id_product
 
 def choose_random_quantity():
     random_quantity = random.randint(1,50)
     return random_quantity
 
+def choose_random_product():
+    random_id_product = random.randint(1,q_products)
+    return random_id_product
+
 def p(text):
     print(text) 
-
 
 while (True):
     try:
@@ -47,11 +47,13 @@ while (True):
                 rand_quantity = choose_random_quantity()
                 cursor.callproc("add_stock_without_text",(rand_product,rand_quantity))
                 cursor.execute(f"select product_name from products where id_product = {rand_product} ")
-                productname_ = cursor.fetchone()[0]  
+                productname_ = cursor.fetchone()[0]
+                p('')  
                 if rand_product >= 10:
                     p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
                 elif rand_product < 10:
-                    p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                    p(f"Product:  {rand_product}- {productname_} Added: {rand_quantity}")
+                p('')
                 i += 1
             cnx.commit()
         elif choice == 3:

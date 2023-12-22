@@ -43,23 +43,23 @@ while (True):
             print("Write the Name or/and Surname")
             var = input("----> ")
             cursor.execute(f"SELECT * FROM pruebaspython.user where concat(name,' ',surname) like '%{var}%'")
-            userslike = cursor.fetchall()
-            userslike_df = pd.DataFrame(userslike,columns=['ID','Name','Surname','Age']) 
-            for user in userslike:
-                c += 1
-            print(f"{c} Rows Returned")
-            
-            
-            print(userslike_df)
-            c=0
+            if (cursor.rowcount+1) > 0: 
+                userslike = cursor.fetchall()
+                for user in userslike:
+                    c += 1
+                userslike_df = pd.DataFrame(userslike,columns=['ID','Name','Surname','Age']) 
+                print(f"{c} Rows Returned")
+                print(userslike_df)
+                c=0
         elif choice == 4:
                 print("Delete the user with the Complete Name & Surname")
                 
                 var = input("----> ")
                 cursor.execute(f"select * from user where concat(name,' ',surname) like '{var}' ")
+                
                 users = cursor.fetchall()
                 cnx.commit()
-                print(f"User {var} deleted") 
+                print(f"User {var} goona be deleted") 
                     
                 resp = input("Are you sure you want to delete these Users? Y/N -> ")
                 if resp.lower() == 'y':  
