@@ -57,8 +57,9 @@ while (True):
                 print(f"There's no user like {var}")  
             c = 0
         elif choice == 4:
-            avg_age = cursor.fetchone("SELECT avg(age) FROM pruebaspython.user")
-            print(f"The average age is: {avg_age[0]}")       
+            cursor.execute("SELECT avg(age) FROM pruebaspython.user")
+            avg_age = cursor.fetchone()[0]
+            print(f"The average age is: {avg_age}")       
         elif choice == 5:
                 print("Delete the user with the Complete Name & Surname")
                 
@@ -67,7 +68,7 @@ while (True):
                 
                 users = cursor.fetchall()
                 cnx.commit()
-                print(f"User {var} goona be deleted") 
+                print(f"User {var} gonna be deleted") 
                     
                 resp = input("Are you sure you want to delete these Users? Y/N -> ")
                 if resp.lower() == 'y':  
