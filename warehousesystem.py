@@ -35,13 +35,15 @@ while (True):
                 break
             id_product = int(id_product)
             cursor.execute(f"select product_name from products where id_product = {id_product}")
-            productname = cursor.fetchone()[0]
-            q = input(f"How many of {productname}? -> ")
-            cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
-            product = cursor.fetchone()
-            price = product[0]
-            p(f"{q} of {productname} -> {price}$ ")
-               
+            if cursor.rowcount == 0:
+                productname = cursor.fetchone()[0]
+                q = input(f"How many of {productname}? -> ")
+                cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
+                product = cursor.fetchone()
+                price = product[0]
+                p(f"{q} of {productname} -> {price}$ ")
+            else:
+                print("There's not a Product with this id_product")    
         elif choice == 2:
             
             max = int(input("How Many random inserts do you want? -> "))
