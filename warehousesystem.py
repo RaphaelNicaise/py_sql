@@ -39,7 +39,7 @@ while (True):
             
             cursor.execute(f"select product_name from products where id_product = {id_product}")
             
-            if max_product_id >= id_product:       
+            if  id_product <= max_product_id :       
                 
                 productname = cursor.fetchone()[0]
                 q = input(f"How many of {productname}? -> ")
