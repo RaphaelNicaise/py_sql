@@ -35,7 +35,7 @@ while (True):
                 break
             id_product = int(id_product)
             cursor.execute(f"select product_name from products where id_product = {id_product}")
-            if cursor.rowcount != 0:
+            if int(cursor.rowcount) != 0:
                 print("There's not a Product with this id_product")
             else:
                 
