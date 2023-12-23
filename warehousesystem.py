@@ -20,9 +20,11 @@ def quantity_of_products():
     result = cursor.fetchone()[0]
     return result
 max_product_id = quantity_of_products()
+
 def p(text):
     print(text) 
 
+    
 while (True):
     try:
         
@@ -53,18 +55,19 @@ while (True):
             
             max = int(input("How Many random inserts do you want? -> "))
             i = 0
+            p('')
             while (i < max):
                 rand_product = choose_random_product()
                 rand_quantity = choose_random_quantity()
                 cursor.callproc("add_stock_without_text",(rand_product,rand_quantity))
                 cursor.execute(f"select product_name from products where id_product = {rand_product} ")
-                productname_ = cursor.fetchone()[0]
-                p('')  
+                productname_ = cursor.fetchone()[0]  
                 if rand_product >= 10:
                     p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
                 elif rand_product < 10:
                     p(f"Product:  {rand_product}- {productname_} Added: {rand_quantity}")
                 i += 1    
+            p('')
             cnx.commit()
             
         elif choice == 3:
