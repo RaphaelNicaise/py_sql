@@ -7,28 +7,25 @@ cnx = mysql.connector.MySQLConnection(
     database='warehousesystem',port='3306')
 cursor = cnx.cursor()
 
-cursor.execute("select distinct count(*) from products")
-q_products = cursor.fetchone()[0]
-
-
 def choose_random_quantity():
     random_quantity = random.randint(1,50)
     return random_quantity
 
 def choose_random_product():
-    random_id_product = random.randint(1,q_products)
+    random_id_product = random.randint(1,quantity_of_products())
     return random_id_product
 
 def quantity_of_products():
     cursor.execute("select max(id_product) from products")
     result = cursor.fetchone()[0]
     return result
+max_product_id = quantity_of_products()
 def p(text):
     print(text) 
 
 while (True):
     try:
-        print(quantity_of_products())
+        
         print("| WarehouseSystem |")
         print("1 - Select a Product ID & Calculate Price \n2 - Insert N randon products \n3 - Quit")
         choice = int(input("Choose an Option -> "))
@@ -42,7 +39,7 @@ while (True):
             
             cursor.execute(f"select product_name from products where id_product = {id_product}")
             
-            if quantity_of_products() > id_product:       
+            if max_product_id >= id_product:       
                 
                 productname = cursor.fetchone()[0]
                 q = input(f"How many of {productname}? -> ")
