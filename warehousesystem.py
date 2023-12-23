@@ -19,11 +19,16 @@ def choose_random_product():
     random_id_product = random.randint(1,q_products)
     return random_id_product
 
+def quantity_of_products():
+    cursor.execute("select max(id_product) from products")
+    result = cursor.fetchone()[0]
+    return result
 def p(text):
     print(text) 
 
 while (True):
     try:
+        print(quantity_of_products())
         print("| WarehouseSystem |")
         print("1 - Select a Product ID & Calculate Price \n2 - Insert N randon products \n3 - Quit")
         choice = int(input("Choose an Option -> "))
@@ -34,10 +39,10 @@ while (True):
                 p("Returning to menu")
                 break
             id_product = int(id_product)
+            
             cursor.execute(f"select product_name from products where id_product = {id_product}")
-            if int(cursor.rowcount) != 0:
-                print("There's not a Product with this id_product")
-            else:
+            
+            if quantity_of_products() > id_product:       
                 
                 productname = cursor.fetchone()[0]
                 q = input(f"How many of {productname}? -> ")
@@ -45,6 +50,8 @@ while (True):
                 product = cursor.fetchone()
                 price = product[0]
                 p(f"{q} of {productname} -> {price}$ ")   
+            else:
+                print(f"There's no product with id {id_product}")      
         elif choice == 2:
             
             max = int(input("How Many random inserts do you want? -> "))
