@@ -59,7 +59,7 @@ while (True):
             while (i < max):
                 rand_product = choose_random_product()
                 rand_quantity = choose_random_quantity()
-                cursor.callproc("add_stock_without_text",(rand_product,rand_quantity))
+                cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 cursor.execute(f"select product_name from products where id_product = {rand_product} ")
                 productname_ = cursor.fetchone()[0]  
                 if rand_product >= 10:
