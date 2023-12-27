@@ -20,6 +20,8 @@ def quantity_of_products():
     result = cursor.fetchone()[0]
     return result
 
+max_product_id = quantity_of_products()
+
 def calculate_price():
     try:
         id_product = int(entry_product_id.get())
@@ -58,17 +60,16 @@ def insert_random_products():
 window = tk.Tk()
 window.title("WarehouseSystem")
 
-# Labels
+# Inputs
 label_product_id = tk.Label(window, text="Enter Product ID:")
 label_quantity = tk.Label(window, text="Enter Quantity:")
 label_max_inserts = tk.Label(window, text="Enter Max Inserts:")
 
-# Entry widgets
 entry_product_id = tk.Entry(window)
 entry_quantity = tk.Entry(window)
 entry_max_inserts = tk.Entry(window)
 
-# Result label
+# Results
 result_label = tk.Label(window, text="")
 results_text = tk.StringVar()
 results_label = tk.Label(window, textvariable=results_text)
@@ -78,7 +79,7 @@ calculate_button = tk.Button(window, text="Calculate Price", command=calculate_p
 insert_button = tk.Button(window, text="Insert Random Products", command=insert_random_products)
 quit_button = tk.Button(window, text="Quit", command=window.quit)
 
-# Grid layout
+# Layout
 label_product_id.grid(row=0, column=0)
 entry_product_id.grid(row=0, column=1)
 label_quantity.grid(row=1, column=0)
