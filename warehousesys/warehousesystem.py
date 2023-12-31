@@ -53,10 +53,10 @@ while (True):
                 print(f"There's no product with id {id_product}")      
         elif choice == 2:
             
-            max = int(input("How Many random inserts do you want? -> "))
+            amoun_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
             p('')
-            while (i < max):
+            while (i < amoun_products_to_insert):
                 rand_product = choose_random_product()
                 cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
                 productname_,q = cursor.fetchone()
