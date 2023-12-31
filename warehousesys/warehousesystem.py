@@ -7,8 +7,8 @@ cnx = mysql.connector.MySQLConnection(
     database='warehousesystem',port='3306')
 cursor = cnx.cursor()
 
-def choose_random_quantity():
-    random_quantity = random.randint(1,50)
+def choose_random_quantity(min,max):
+    random_quantity = random.randint(min,max)
     return random_quantity
 
 def choose_random_product():
@@ -58,14 +58,14 @@ while (True):
             p('')
             while (i < max):
                 rand_product = choose_random_product()
-                rand_quantity = choose_random_quantity()
+                cursor.execute(f"select product_name,price from products where id_product = {rand_product} ")
+                productname_,price = cursor.fetchone()
+                print(productname_,price)
+                rand_quantity = choose_random_quantity(0,50)
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
-                cursor.execute(f"select product_name from products where id_product = {rand_product} ")
-                productname_ = cursor.fetchone()[0]  
-                if rand_product >= 10:
-                    p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
-                elif rand_product < 10:
-                    p(f"Product:  {rand_product}- {productname_} Added: {rand_quantity}")
+                
+                
+                p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
                 i += 1    
             p('')
             cnx.commit()
