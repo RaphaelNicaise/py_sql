@@ -60,12 +60,21 @@ while (True):
                 rand_product = choose_random_product()
                 cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
                 productname_,q = cursor.fetchone()
-                print(productname_,q)
-                rand_quantity = choose_random_quantity(0,50)
+                
+                if q > 50:
+                    rand_quantity = choose_random_quantity(-49,50)
+                elif q <= 50:
+                    rand_quantity = choose_random_quantity(0,50)
+                    while rand_quantity == 0:
+                        rand_quantity = choose_random_quantity(0,50)
+                    
+                
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
-                
-                
-                p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                if rand_quantity > 0:
+                    p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                elif rand_quantity < 0:
+                    p(f"Product: {rand_product}- {productname_} removed: {rand_quantity}")    
+                    
                 i += 1    
             p('')
             cnx.commit()
