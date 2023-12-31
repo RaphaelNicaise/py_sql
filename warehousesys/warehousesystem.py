@@ -58,9 +58,12 @@ while (True):
             p('')
             while (i < max):
                 rand_product = choose_random_product()
-                cursor.execute(f"select product_name,price from products where id_product = {rand_product} ")
-                productname_,price = cursor.fetchone()
-                print(productname_,price)
+                cursor.execute(f"SELECT product_name,quantity 
+                               FROM warehousesystem.products 
+                               pr join inventory inv on inv.id_product = pr.id_product 
+                               where inv.id_product = {rand_product} ")
+                productname_,q = cursor.fetchone()
+                print(productname_,q)
                 rand_quantity = choose_random_quantity(0,50)
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 
