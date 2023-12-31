@@ -58,10 +58,7 @@ while (True):
             p('')
             while (i < max):
                 rand_product = choose_random_product()
-                cursor.execute(f"SELECT product_name,quantity 
-                               FROM warehousesystem.products 
-                               pr join inventory inv on inv.id_product = pr.id_product 
-                               where inv.id_product = {rand_product} ")
+                cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
                 productname_,q = cursor.fetchone()
                 print(productname_,q)
                 rand_quantity = choose_random_quantity(0,50)
