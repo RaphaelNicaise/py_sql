@@ -34,9 +34,10 @@ while (True):
     try:
         
         print("| WarehouseSystem |")
-        print("1 - Select a Product ID & Calculate Price \n2 - Insert N randon products \n3 - Quit")
+        print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Quit")
         choice = int(input("Choose an Option -> "))
-        if choice == 1:
+    ##  if choice == 1: MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
+        if choice == 2:
             
             id_product = input("Select an Id_product: ")
             if id_product.lower() == 'quit':
