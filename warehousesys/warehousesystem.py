@@ -2,9 +2,12 @@ import mysql.connector
 import random
 import pandas as pd
 
-cnx = mysql.connector.MySQLConnection(
+def connect_to_db():
+    return mysql.connector.MySQLConnection(
     user='root',password='',host='localhost',
     database='warehousesystem',port='3306')
+
+cnx = connect_to_db()
 cursor = cnx.cursor()
 
 def choose_random_quantity(min,max):
@@ -19,10 +22,12 @@ def quantity_of_products():
     cursor.execute("select max(id_product) from products")
     result = cursor.fetchone()[0]
     return result
-max_product_id = quantity_of_products()
 
 def p(text):
     print(text) 
+
+max_product_id = quantity_of_products()
+
 
     
 while (True):
@@ -71,7 +76,7 @@ while (True):
                 
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 if rand_quantity > 0:
-                    p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                        p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
                 elif rand_quantity < 0:
                     p(f"Product: {rand_product}- {productname_} removed: {rand_quantity}")    
                     
