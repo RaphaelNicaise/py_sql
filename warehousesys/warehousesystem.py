@@ -36,7 +36,10 @@ while (True):
         print("| WarehouseSystem |")
         print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Quit")
         choice = int(input("Choose an Option -> "))
-    ##  if choice == 1: MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
+        if choice == 1: # MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
+            id_product = input("Select an Id_product: ")
+            cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,count(*) ,	SP.name as Supplier ,TIMESTAMPDIFF(HOUR, INV.last_movement, NOW()) FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier JOIN stock_movements SM ON SM.id_product = PR.id_product where id_product = {id_product} group by id_product")
+            print(cursor.fetchone())           
         if choice == 2:
             
             id_product = input("Select an Id_product: ")
@@ -57,7 +60,7 @@ while (True):
                 p(f"{q} of {productname} -> {price}$ ")   
             else:
                 print(f"There's no product with id {id_product}")      
-        elif choice == 2:
+        elif choice == 3:
             
             amoun_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
@@ -85,7 +88,7 @@ while (True):
             p('')
             cnx.commit()
             
-        elif choice == 3:
+        elif choice == 4:
             p("Leaving program")
             break
     except ValueError:
