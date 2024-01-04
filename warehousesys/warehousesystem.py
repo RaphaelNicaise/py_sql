@@ -41,40 +41,45 @@ while (True):
         print("| WarehouseSystem |")
         print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Quit")
         choice = int(input("Choose an Option -> "))
-        if choice == 1: # MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
+        if choice == 1: 
             try: 
                 id_product = input("Select an Id_product: ")
                 product = select_a_product(id_product)
+                p(product)
             except ValueError:
-                p("Invalid Number")
-                continue
+                p("Invalid Character")
+                
                  
         if choice == 2:
-            
-            id_product = input("Select an Id_product: ")
-            if id_product.lower() == 'quit':
-                p("Returning to menu")
-                break
-            id_product = int(id_product)
-            
-            cursor.execute(f"select product_name from products where id_product = {id_product}")
-            
-            if  id_product <= max_product_id :       
+            try:
+                id_product = input("Select an Id_product: ")
+                if id_product.lower() == 'quit':
+                    p("Returning to menu")
+                    break
+                id_product = int(id_product)
                 
-                productname = cursor.fetchone()[0]
-                q = input(f"How many of {productname}? -> ")
-                cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
-                product = cursor.fetchone()
-                price = product[0]
-                p(f"{q} of {productname} -> {price}$ ")   
-            else:
-                print(f"There's no product with id {id_product}")      
+                cursor.execute(f"select product_name from products where id_product = {id_product}")
+                
+                if  id_product <= max_product_id :       
+                    
+                    productname = cursor.fetchone()[0]
+                    q = input(f"How many of {productname}? -> ")
+                    cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
+                    product = cursor.fetchone()
+                    price = product[0]
+                    p(f"{q} of {productname} -> {price}$ ")   
+                else:
+                    print(f"There's no product with id {id_product}")
+            except ValueError:
+                p("Invalid Character")
+                
+                 
         elif choice == 3:
             
-            amoun_products_to_insert = int(input("How Many random inserts do you want? -> "))
+            amount_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
             p('')
-            while (i < amoun_products_to_insert):
+            while (i < amount_products_to_insert):
                 rand_product = choose_random_product()
                 cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
                 productname_,q = cursor.fetchone()
@@ -101,7 +106,7 @@ while (True):
             p("Leaving program")
             break
     except ValueError:
-        print("Wrong character")
+        p("Wrong character")
 cnx.close()
  
     
