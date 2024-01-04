@@ -42,10 +42,13 @@ while (True):
         print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Quit")
         choice = int(input("Choose an Option -> "))
         if choice == 1: # MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
-            id_product = input("Select an Id_product: ")
-            products = select_a_product(id_product)
-            for product in products:
-                print(product)      
+            try: 
+                id_product = input("Select an Id_product: ")
+                product = select_a_product(id_product)
+            except ValueError:
+                p("Invalid Number")
+                continue
+                 
         if choice == 2:
             
             id_product = input("Select an Id_product: ")
