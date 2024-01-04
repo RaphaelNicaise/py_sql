@@ -43,8 +43,9 @@ while (True):
         choice = int(input("Choose an Option -> "))
         if choice == 1: # MOSTRAR INFORMACION DE UN PRODUCTO, Nombre, desc, precio,etc PODES HACER UNA FUNCION.
             id_product = input("Select an Id_product: ")
-            product = select_a_product(id_product)
-            print(product)      
+            products = select_a_product(id_product)
+            for product in products:
+                print(product)      
         if choice == 2:
             
             id_product = input("Select an Id_product: ")
