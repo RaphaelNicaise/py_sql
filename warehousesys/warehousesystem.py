@@ -51,14 +51,14 @@ while (True):
                 product = select_a_product(id_product)
                 p(product)
             except ValueError:
-                p("Invalid Character")
+                print("Invalid Character")
                 
                  
         if choice == 2:
             try:
                 id_product = input("Select an Id_product: ")
                 if id_product.lower() == 'quit':
-                    p("Returning to menu")
+                    print("Returning to menu")
                     break
                 id_product = int(id_product)
                 
@@ -71,18 +71,18 @@ while (True):
                     cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
                     product = cursor.fetchone()
                     price = product[0]
-                    p(f"{q} of {productname} -> {price}$ ")   
+                    print(f"{q} of {productname} -> {price}$ ")   
                 else:
                     print(f"There's no product with id {id_product}")
             except ValueError:
-                p("Invalid Character")
+                print("Invalid Character")
                 
                  
         elif choice == 3:
             
             amount_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
-            p('')
+            print('')
             while (i < amount_products_to_insert):
                 rand_product = choose_random_product()
                 cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
@@ -98,19 +98,19 @@ while (True):
                 
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 if rand_quantity > 0:
-                        p(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                        print(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
                 elif rand_quantity < 0:
-                    p(f"Product: {rand_product}- {productname_} removed: {rand_quantity}")    
+                    print(f"Product: {rand_product}- {productname_} removed: {rand_quantity}")    
                     
                 i += 1    
-            p('')
+            print('')
             cnx.commit()
             
         elif choice == 4:
-            p("Leaving program")
+            print("Leaving program")
             break
     except ValueError:
-        p("Wrong character")
+        print("Wrong character")
 cnx.close()
  
     
