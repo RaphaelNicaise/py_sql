@@ -47,7 +47,7 @@ while (True):
             try: 
                 id_product = input("Select an Id_product: ")
                 product = select_a_product(id_product)
-                p(product)
+                print(product)
             except ValueError:
                 print("Invalid Character")
                 
