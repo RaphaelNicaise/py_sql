@@ -49,7 +49,7 @@ while (True):
                 product = select_a_product(id_product)
                 print(product)
             except ValueError:
-                print("Invalid-Character")
+                print("Invalid Character")
                 
                  
         if choice == 2:
