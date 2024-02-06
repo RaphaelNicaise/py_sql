@@ -128,7 +128,7 @@ while (True):
             for i in range(1,max_product_id+1):
                 product = select_a_product(i)
                 print(f"{i}-{product[1]} -> {calculate_price(i,1)[0]}$ each one. Total: {calculate_price(i,product[4])[0]}$")
-            
+                  
         elif choice == 5:
             print("Leaving program")
             break
