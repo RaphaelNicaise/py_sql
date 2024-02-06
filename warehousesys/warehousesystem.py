@@ -1,6 +1,8 @@
 import mysql.connector
 import random
 import pandas as pd
+"""quiero que el menu se muestre en flask y que se pueda seleccionar un producto y calcular el precio de ese producto
+y que se pueda insertar productos aleatorios en la base de datos"""
 
 def connect_to_db():
     try:
@@ -31,11 +33,15 @@ def select_a_product(id_product):
     cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,count(*) ,	SP.name as Supplier ,TIMESTAMPDIFF(HOUR, INV.last_movement, NOW()) FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier JOIN stock_movements SM ON SM.id_product = PR.id_product where PR.id_product = {id_product} group by id_product")
     result = cursor.fetchone()
     return result
- 
 
+def calculate_price(id_product,quantity):
+    cursor.execute(f"Select price*{quantity} from products where id_product = {id_product} ")
+    result = cursor.fetchone()
+    return result
+
+  
+    
 max_product_id = quantity_of_products()
-
-
     
 while (True):
     try:
@@ -47,11 +53,21 @@ while (True):
             try: 
                 id_product = input("Select an Id_product: ")
                 product = select_a_product(id_product)
-                print(product)
+                if  int(id_product) <= max_product_id: 
+                    print(f"Product ID: {product[0]}")
+                    print(f"Product Name: {product[1]}")
+                    print(f"Description: {product[2]}")
+                    print(f"Price: {product[3]}")
+                    print(f"Quantity: {product[4]}")
+                    print(f"Category: {product[5]}")
+                    print(f"Supplier: {product[7]}")
+                    print(f"Last Movement: {product[8]} hours ago")
+                else:
+                    print(f"There's no product with id {id_product}")
             except ValueError:
                 print("Invalid Character")
                 
-                 
+        """un choice que use add_stock para insertar productos aleatorios en la base de datos"""
         if choice == 2:
             try:
                 id_product = input("Select an Id_product: ")
@@ -60,15 +76,11 @@ while (True):
                     break
                 id_product = int(id_product)
                 
-                cursor.execute(f"select product_name from products where id_product = {id_product}")
-                
                 if  id_product <= max_product_id :       
                     
-                    productname = cursor.fetchone()[0]
+                    productname = select_a_product(id_product)[1]
                     q = input(f"How many of {productname}? -> ")
-                    cursor.execute(f"Select price*{q} from products where id_product = {id_product} ")
-                    product = cursor.fetchone()
-                    price = product[0]
+                    price = calculate_price(id_product,q)[0]
                     print(f"{q} of {productname} -> {price}$ ")   
                 else:
                     print(f"There's no product with id {id_product}")
