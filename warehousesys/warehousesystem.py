@@ -37,15 +37,24 @@ def calculate_price(id_product,quantity):
     result = cursor.fetchone()
     return result
 
-  
     
 max_product_id = quantity_of_products()
     
 while (True):
     try:
         
-        print("| WarehouseSystem |")
-        print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Show all prices \n5 - Quit")
+        print(r"""
+              
+                █░█░█ ▄▀█ █▀█ █▀▀ █░█ █▀█ █░█ █▀ █▀▀ █▀ █▄█ █▀
+                ▀▄▀▄▀ █▀█ █▀▄ ██▄ █▀█ █▄█ █▄█ ▄█ ██▄ ▄█ ░█░ ▄█
+                
+                  1 - Info of a product 
+                  2 - Select a Product ID & Calculate Price
+                  3 - Insert N randon products 
+                  4 - Show all prices 
+                  5 - Quit
+                  
+                """)
         choice = int(input("Choose an Option -> "))
         if choice == 1: 
             try: 
@@ -113,6 +122,7 @@ while (True):
                 i += 1    
             print('')
             cnx.commit()
+            
         elif choice == 4:
             print(f"{max_product_id} products")
             for i in range(1,max_product_id+1):
