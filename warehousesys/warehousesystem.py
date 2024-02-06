@@ -65,7 +65,7 @@ while (True):
             except ValueError:
                 print("Invalid Character")
                 
-        """un choice que use add_stock para insertar productos aleatorios en la base de datos"""
+        
         if choice == 2:
             try:
                 id_product = input("Select an Id_product: ")
