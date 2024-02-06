@@ -1,8 +1,6 @@
 import mysql.connector
 import random
 import pandas as pd
-"""quiero que el menu se muestre en flask y que se pueda seleccionar un producto y calcular el precio de ese producto
-y que se pueda insertar productos aleatorios en la base de datos"""
 
 def connect_to_db():
     try:
