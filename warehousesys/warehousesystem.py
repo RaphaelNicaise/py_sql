@@ -45,7 +45,7 @@ while (True):
     try:
         
         print("| WarehouseSystem |")
-        print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Quit")
+        print("1 - Info of a product \n2 - Select a Product ID & Calculate Price \n3 - Insert N randon products \n4 - Show all prices \n5 - Quit")
         choice = int(input("Choose an Option -> "))
         if choice == 1: 
             try: 
@@ -113,8 +113,13 @@ while (True):
                 i += 1    
             print('')
             cnx.commit()
-            
         elif choice == 4:
+            print(f"{max_product_id} products")
+            for i in range(1,max_product_id+1):
+                product = select_a_product(i)
+                print(f"{i}-{product[1]} -> {calculate_price(i,1)[0]}$ each one. Total: {calculate_price(i,product[4])[0]}$")
+            
+        elif choice == 5:
             print("Leaving program")
             break
     except ValueError:
