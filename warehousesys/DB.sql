@@ -77,6 +77,16 @@ DROP SCHEMA IF EXISTS WarehouseSystem;
         FOREIGN KEY (id_product) REFERENCES products (id_product)
         );
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `change_price`(IN id_product_ INT,IN new_price DECIMAL(10,2))
+BEGIN
+	IF new_price >= 0 THEN
+		UPDATE products set price = new_price where id_product = id_product_;
+	ELSE
+		SIGNAL SQLSTATE '45000'
+        SET MESSAGE_TEXT = 'You cant set that price.';
+	END IF;
+END
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_stock_2`(IN p_id_product INT, IN p_in_quantity INT)
 BEGIN
     DECLARE product_count INT;
