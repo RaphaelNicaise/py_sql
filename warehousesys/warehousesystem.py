@@ -1,44 +1,14 @@
 import mysql.connector
 import random
-import pandas as pd
+import warehousefunctions as wf
 
-def connect_to_db():
-    try:
-        return mysql.connector.MySQLConnection(
-            user='root',password='',host='localhost',
-            database='warehousesystem',port='3306')
-                                               
-    except mysql.connector.Error as err:
-        print(f"{err}")
-        return None
-cnx = connect_to_db()
+
+cnx = wf.connect_to_db()
 cursor = cnx.cursor()
 
-def choose_random_quantity(min,max):
-    random_quantity = random.randint(min,max)
-    return random_quantity
-
-def choose_random_product():
-    random_id_product = random.randint(1,quantity_of_products())
-    return random_id_product
-
-def quantity_of_products():
-    cursor.execute("select max(id_product) from products")
-    result = cursor.fetchone()[0]
-    return result
-
-def select_a_product(id_product):
-    cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,count(*) ,	SP.name as Supplier ,TIMESTAMPDIFF(HOUR, INV.last_movement, NOW()) FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier JOIN stock_movements SM ON SM.id_product = PR.id_product where PR.id_product = {id_product} group by id_product")
-    result = cursor.fetchone()
-    return result
-
-def calculate_price(id_product,quantity):
-    cursor.execute(f"Select price*{quantity} from products where id_product = {id_product} ")
-    result = cursor.fetchone()
-    return result
 
     
-max_product_id = quantity_of_products()
+max_product_id = wf.quantity_of_products()
     
 while (True):
     try:
@@ -59,7 +29,7 @@ while (True):
         if choice == 1: 
             try: 
                 id_product = input("Select an Id_product: ")
-                product = select_a_product(id_product)
+                product = wf.select_a_product(id_product)
                 if  int(id_product) <= max_product_id: 
                     print(f"Product ID: {product[0]}")
                     print(f"Product Name: {product[1]}")
@@ -85,15 +55,14 @@ while (True):
                 
                 if  id_product <= max_product_id :       
                     
-                    productname = select_a_product(id_product)[1]
+                    productname = wf.select_a_product(id_product)[1]
                     q = input(f"How many of {productname}? -> ")
-                    price = calculate_price(id_product,q)[0]
+                    price = wf.calculate_price(id_product,q)[0]
                     print(f"{q} of {productname} -> {price}$ ")   
                 else:
                     print(f"There's no product with id {id_product}")
             except ValueError:
                 print("Invalid Character")
-                
                  
         elif choice == 3:
             
@@ -101,16 +70,16 @@ while (True):
             i = 0
             print('')
             while (i < amount_products_to_insert):
-                rand_product = choose_random_product()
+                rand_product = wf.choose_random_product()
                 cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
                 productname_,q = cursor.fetchone()
                 
                 if q > 50:
-                    rand_quantity = choose_random_quantity(-49,50)
+                    rand_quantity = wf.choose_random_quantity(-49,50)
                 elif q <= 50:
-                    rand_quantity = choose_random_quantity(0,50)
+                    rand_quantity = wf.choose_random_quantity(0,50)
                     while rand_quantity == 0:
-                        rand_quantity = choose_random_quantity(0,50)
+                        rand_quantity = wf.choose_random_quantity(0,50)
                     
                 
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
@@ -126,8 +95,8 @@ while (True):
         elif choice == 4:
             print(f"{max_product_id} products")
             for i in range(1,max_product_id+1):
-                product = select_a_product(i)
-                print(f"{i}-{product[1]} -> {calculate_price(i,1)[0]}$ each one. Total: {calculate_price(i,product[4])[0]}$")
+                product = wf.select_a_product(i)
+                print(f"{i}-{product[1]} -> {wf.calculate_price(i,1)[0]}$ each one. Total: {wf.calculate_price(i,product[4])[0]}$")
                   
         elif choice == 5:
             print("Leaving program")
