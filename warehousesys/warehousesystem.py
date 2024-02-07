@@ -2,9 +2,7 @@ import warehousefunctions as wf
 
 cnx = wf.connect_to_db()
 cursor = cnx.cursor()
-    
 
-    
 while (True):
     try:
         
@@ -16,12 +14,13 @@ while (True):
                   1 - Info of a product 
                   2 - Select a Product ID & Calculate Price
                   3 - Insert N randon products 
-                  4 - Show all prices 
-                  5 - Quit
+                  4 - Show all prices
+                  5 - Change price of a product 
+                  6 - Quit
                   
                 """)
-        choice = int(input("Choose an Option -> "))
-        if choice == 1: 
+        option = int(input("Choose an Option -> "))
+        if option == 1: 
             try: 
                 id_product = input("Select an Id_product: ")
                 product = wf.select_a_product(id_product)
@@ -40,7 +39,7 @@ while (True):
                 print("Invalid Character")
                 
         
-        if choice == 2:
+        if option == 2:
             try:
                 id_product = input("Select an Id_product: ")
                 if id_product.lower() == 'quit':
@@ -59,7 +58,7 @@ while (True):
             except ValueError:
                 print("Invalid Character")
                  
-        elif choice == 3:
+        elif option == 3:
             
             amount_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
@@ -87,17 +86,33 @@ while (True):
             print('')
             cnx.commit()
             
-        elif choice == 4:
+        elif option == 4:
             print(f"{wf.max_product_id} products")
             for i in range(1,wf.max_product_id+1):
                 product = wf.select_a_product(i)
                 print(f"{i}-{product[1]} -> {wf.calculate_price(i,1)[0]}$ each one. Total: {wf.calculate_price(i,product[4])[0]}$")
-                  
-        elif choice == 5:
+        elif option == 5: 
+            try:
+                id_product = int(input("Select an Id_product to change price: "))
+                product = wf.select_a_product(id_product)
+                print(F"Current price: {product[3]}$")
+                new_price = float(input(f"New price for {product[1]} -> "))
+                while new_price < 0:
+                    new_price = float(input("Price can't be negative -> "))
+                wf.change_price(id_product,new_price)
+                if new_price > product[3]:
+                    print(f"Price of {product[1]} increased from {product[3]}to {new_price}$")
+                elif new_price < product[3]:
+                    print(f"Price of {product[1]} decreased from {product[3]}to {new_price}$")
+                else:
+                    print(f"Price of {product[1]} its the same")
+            except ValueError:
+                print("Invalid Character")
+        elif option == 6:
             print("Leaving program")
             break
     except ValueError:
-        print("Wrong character")
+        print("Invalid character, choose an option")
 cnx.close()
  
     
