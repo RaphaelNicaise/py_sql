@@ -6,19 +6,7 @@ cursor = cnx.cursor()
 while (True):
     try:
         
-        print(r"""
-              
-                █░█░█ ▄▀█ █▀█ █▀▀ █░█ █▀█ █░█ █▀ █▀▀ █▀ █▄█ █▀
-                ▀▄▀▄▀ █▀█ █▀▄ ██▄ █▀█ █▄█ █▄█ ▄█ ██▄ ▄█ ░█░ ▄█
-                
-                  1 - Info of a product 
-                  2 - Select a Product ID & Calculate Price
-                  3 - Insert N randon products 
-                  4 - Show all prices
-                  5 - Change price of a product 
-                  6 - Quit
-                  
-                """)
+        wf.menu()
         option = int(input("Choose an Option -> "))
         if option == 1: 
             try: 

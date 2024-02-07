@@ -15,7 +15,20 @@ def connect_to_db():
 cnx = connect_to_db()
 cursor = cnx.cursor()
 
-
+def menu():
+    print(r"""
+              
+                █░█░█ ▄▀█ █▀█ █▀▀ █░█ █▀█ █░█ █▀ █▀▀ █▀ █▄█ █▀
+                ▀▄▀▄▀ █▀█ █▀▄ ██▄ █▀█ █▄█ █▄█ ▄█ ██▄ ▄█ ░█░ ▄█
+                
+                  1 - Info of a product 
+                  2 - Select a Product ID & Calculate Price
+                  3 - Insert N randon products 
+                  4 - Show all prices
+                  5 - Change price of a product 
+                  6 - Quit
+                  
+                """)
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
     return random_quantity
