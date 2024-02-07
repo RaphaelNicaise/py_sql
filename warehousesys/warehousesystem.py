@@ -27,7 +27,7 @@ while (True):
                 print("Invalid Character")
                 
         
-        if option == 2:
+        elif option == 2:
             try:
                 id_product = input("Select an Id_product: ")
                 if id_product.lower() == 'quit':
@@ -53,9 +53,10 @@ while (True):
             print('')
             while (i < amount_products_to_insert):
                 rand_product = wf.choose_random_product()
-                cursor.execute(f"SELECT product_name,quantity FROM warehousesystem.products pr join inventory inv on inv.id_product = pr.id_product where inv.id_product = {rand_product} ")
-                productname_,q = cursor.fetchone()
-                
+                product = wf.select_a_product(rand_product)
+                productname =  product[1]
+                q = product[4]
+            
                 if q > 50:
                     rand_quantity = wf.choose_random_quantity(-49,50)
                 elif q <= 50:
@@ -66,9 +67,9 @@ while (True):
                 
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 if rand_quantity > 0:
-                        print(f"Product: {rand_product}- {productname_} Added: {rand_quantity}")
+                        print(f"Product: {rand_product}- {productname} Added: {rand_quantity}")
                 elif rand_quantity < 0:
-                    print(f"Product: {rand_product}- {productname_} removed: {rand_quantity}")    
+                    print(f"Product: {rand_product}- {productname} removed: {rand_quantity}")    
                     
                 i += 1    
             print('')
