@@ -1,14 +1,9 @@
-import mysql.connector
-import random
 import warehousefunctions as wf
-
 
 cnx = wf.connect_to_db()
 cursor = cnx.cursor()
-
-
     
-max_product_id = wf.quantity_of_products()
+
     
 while (True):
     try:
@@ -30,7 +25,7 @@ while (True):
             try: 
                 id_product = input("Select an Id_product: ")
                 product = wf.select_a_product(id_product)
-                if  int(id_product) <= max_product_id: 
+                if  int(id_product) <= wf.max_product_id: 
                     print(f"Product ID: {product[0]}")
                     print(f"Product Name: {product[1]}")
                     print(f"Description: {product[2]}")
@@ -53,7 +48,7 @@ while (True):
                     break
                 id_product = int(id_product)
                 
-                if  id_product <= max_product_id :       
+                if  id_product <= wf.max_product_id :       
                     
                     productname = wf.select_a_product(id_product)[1]
                     q = input(f"How many of {productname}? -> ")
@@ -93,8 +88,8 @@ while (True):
             cnx.commit()
             
         elif choice == 4:
-            print(f"{max_product_id} products")
-            for i in range(1,max_product_id+1):
+            print(f"{wf.max_product_id} products")
+            for i in range(1,wf.max_product_id+1):
                 product = wf.select_a_product(i)
                 print(f"{i}-{product[1]} -> {wf.calculate_price(i,1)[0]}$ each one. Total: {wf.calculate_price(i,product[4])[0]}$")
                   

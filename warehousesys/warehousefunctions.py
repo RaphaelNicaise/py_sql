@@ -2,7 +2,6 @@ import mysql.connector
 import random
 import pandas as pd
 
-
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(
@@ -16,7 +15,8 @@ def connect_to_db():
 cnx = connect_to_db()
 cursor = cnx.cursor()
 
-  
+
+
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
     return random_quantity
@@ -39,3 +39,5 @@ def calculate_price(id_product,quantity):
     cursor.execute(f"Select price*{quantity} from products where id_product = {id_product} ")
     result = cursor.fetchone()
     return result
+
+max_product_id = quantity_of_products()
