@@ -13,7 +13,7 @@ while (True):
             try: 
                 id_product = input("Select an Id_product: ")
                 product = wf.select_a_product(id_product)
-                if  int(id_product) <= wf.max_product_id: 
+                if  int(id_product) <= wf.quantity_of_products(): 
                     print(f"Product ID: {product[0]}")
                     print(f"Product Name: {product[1]}")
                     print(f"Description: {product[2]}")
@@ -36,7 +36,7 @@ while (True):
                     break
                 id_product = int(id_product)
                 
-                if  id_product <= wf.max_product_id :       
+                if  id_product <= wf.quantity_of_products() :       
                     
                     productname = wf.select_a_product(id_product)[1]
                     q = input(f"How many of {productname}? -> ")
@@ -80,8 +80,8 @@ while (True):
             cnx.commit()
             
         elif option == 4:
-            print(f"{wf.max_product_id} products")
-            for i in range(1,wf.max_product_id+1):
+            print(f"{wf.quantity_of_products()} products")
+            for i in range(1,wf.quantity_of_products()+1):
                 product = wf.select_a_product(i)
                 print(f"{i}-{product[1]} -> {wf.calculate_price(i,1)[0]}$ each one. Total: {wf.calculate_price(i,product[4])[0]}$")
         elif option == 5: 
@@ -119,7 +119,7 @@ while (True):
                 print(f"id: {supplier[0]} - {supplier[1]}")
             id_supplier = int(input("choose a Supplier: "))
             wf.create_product(product_name,description,price,id_supplier,id_category)
-            print(f"{product_name} with id: {wf.max_product_id+1}added to the system")
+            print(f"{product_name} with id: {wf.quantity_of_products()}added to the system")
             
         elif option == 7:
             print("Leaving program")

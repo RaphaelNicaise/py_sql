@@ -31,10 +31,12 @@ def menu():
                   
                 """)
 def quantity_of_products():
+    cnx = connect_to_db() # agregada la conexion ya que no devolvia datos actualizados
+    cursor = cnx.cursor()
     cursor.execute("select max(id_product) from products")
     result = cursor.fetchone()[0]
     return result
-max_product_id = quantity_of_products()
+
 
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
