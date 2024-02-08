@@ -26,9 +26,16 @@ def menu():
                   3 - Insert N randon products 
                   4 - Show all prices
                   5 - Change price of a product 
-                  6 - Quit
+                  6 - Create a product
+                  7 - Quit
                   
                 """)
+def quantity_of_products():
+    cursor.execute("select max(id_product) from products")
+    result = cursor.fetchone()[0]
+    return result
+max_product_id = quantity_of_products()
+
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
     return random_quantity
@@ -37,13 +44,10 @@ def choose_random_product():
     random_id_product = random.randint(1,quantity_of_products())
     return random_id_product
 
-def quantity_of_products():
-    cursor.execute("select max(id_product) from products")
-    result = cursor.fetchone()[0]
-    return result
-
 def select_a_product(id_product):
-    cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,count(*) ,	SP.name as Supplier ,TIMESTAMPDIFF(HOUR, INV.last_movement, NOW()) FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier JOIN stock_movements SM ON SM.id_product = PR.id_product where PR.id_product = {id_product} group by id_product")
+    cnx = connect_to_db() # agregada la conexion ya que no devolvia datos actualizados
+    cursor = cnx.cursor()
+    cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,SP.name as Supplier FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier where PR.id_product = {id_product} group by id_product")
     result = cursor.fetchone()
     return result
 
@@ -53,9 +57,20 @@ def calculate_price(id_product,quantity):
     return result
 
 def change_price(id_product,new_price):
-    
     cursor.callproc("change_price",(id_product,new_price))
     cnx.commit()
 
+def create_product(product_name,description,price,id_supplier,id_category):
+    cursor.callproc("create_product",(product_name,description,price,id_supplier,id_category))
+    cnx.commit()
 
-max_product_id = quantity_of_products()
+def get_categories():
+    cursor.execute("select * from categories order by id_category asc")
+    result = cursor.fetchall()
+    return result
+
+def get_suppliers():
+    cursor.execute("select id_supplier,name from suppliers order by id_supplier asc")
+    result = cursor.fetchall()
+    return result
+

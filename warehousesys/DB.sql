@@ -87,6 +87,7 @@ BEGIN
 	END IF;
 END
 
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `add_stock_2`(IN p_id_product INT, IN p_in_quantity INT)
 BEGIN
     DECLARE product_count INT;
@@ -106,6 +107,29 @@ BEGIN
         END IF;
     END IF;
     COMMIT;
+END
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `create_product`(IN product_name varchar(255),IN description varchar(255),
+    IN price decimal(10,2),IN id_supplier INT,IN id_category INT)
+BEGIN
+	
+	DECLARE supplier_exists INT;
+    DECLARE category_exists INT;
+
+    
+    SELECT COUNT(*) INTO supplier_exists FROM suppliers WHERE id_supplier = id_supplier;
+    SELECT COUNT(*) INTO category_exists FROM categories WHERE id_category = id_category;
+
+    IF supplier_exists > 0 AND category_exists > 0 THEN
+        
+        INSERT INTO products (product_name, description, price, id_supplier, id_category)
+        VALUES (product_name, description, price, id_supplier, id_category);
+		
+        SELECT CONCAT(product_name,' ',description, ' was added successfully!') as Message;
+    ELSE
+        SELECT CONCAT('The id_supplier: ', id_supplier, ' or id_category: ', id_category, ' doesn`t exist') as Message;
+    END IF;
+	
 END
 
 CREATE TRIGGER ins_outs_stock 
