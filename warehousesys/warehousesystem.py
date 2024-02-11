@@ -59,11 +59,11 @@ while (True):
                 
                 
                 productname =  product[1]
-                q = product[4]
+                quantity = product[4] # Cantidades actuales del producto
                 
-                if q > 50:
+                if quantity > 50:
                     rand_quantity = wf.choose_random_quantity(-49,50)
-                elif q <= 50:
+                elif quantity <= 50:
                     rand_quantity = wf.choose_random_quantity(0,50)
                     while rand_quantity == 0:
                         rand_quantity = wf.choose_random_quantity(0,50)
@@ -71,9 +71,9 @@ while (True):
                     
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 if rand_quantity > 0:
-                        print(f"Product: {rand_product}- {productname} Added: {rand_quantity}")
+                        print(f"Product: {rand_product}- {product[1]} Added: {rand_quantity}")
                 elif rand_quantity < 0:
-                    print(f"Product: {rand_product}- {productname} removed: {rand_quantity}")    
+                    print(f"Product: {rand_product}- {product[1]} removed: {rand_quantity}")    
                         
                 i += 1    
             print('')
