@@ -76,3 +76,13 @@ def get_suppliers():
     result = cursor.fetchall()
     return result
 
+def stock_movements(id_product):
+    cursor.execute(f"select * from stock_movements where id_product = {id_product}")
+    result = cursor.fetchall()
+    return result
+
+# PRUEBAS
+# product_id = int(input("Enter a product id: "))
+# print(f"Stock Movements of {product_id}")
+# for stock_mov in stock_movements(product_id):
+    print(f"{stock_mov[2]} {stock_mov[3]} {stock_mov[4]} {stock_mov[5]}")

@@ -1,7 +1,7 @@
 import warehousefunctions as wf
-
 cnx = wf.connect_to_db()
 cursor = cnx.cursor()
+
 
 while (True):
     try:
@@ -17,7 +17,7 @@ while (True):
                     print(f"Product ID: {product[0]}")
                     print(f"Product Name: {product[1]}")
                     print(f"Description: {product[2]}")
-                    print(f"Price: {product[3]}")
+                    print(f"Price: {product[3]} Total Price: {wf.calculate_price(id_product,product[4])[0]}$")
                     print(f"Quantity: {product[4]}")
                     print(f"Category: {product[5]}")
                     print(f"Supplier: {product[6]}")
