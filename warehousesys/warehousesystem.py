@@ -1,4 +1,6 @@
 import warehousefunctions as wf
+import pandas as pd
+
 cnx = wf.connect_to_db()
 cursor = cnx.cursor()
 
@@ -8,7 +10,9 @@ while (True):
         
         wf.menu()
         
-        option = int(input("Choose an Option -> "))
+        option = input("Choose an Option -> ")
+        if option.isdigit():
+            option = int(option)
         if option == 1: 
             try: 
                 id_product = input("Select an Id_product: ")
@@ -27,8 +31,17 @@ while (True):
             except ValueError:
                 print("Invalid Character")
                 
-        
         elif option == 2:
+            try:
+                productos = wf.select_all_products()
+                
+                print(pd.DataFrame(productos, columns=['id_product', 'product_name', 'description', 'price', 'quantity', 'category', 'Supplier']))
+                response = input("Do you want to save this data in a csv file? (Y/N) -> ")
+                if response.lower() == 'y':
+                    wf.write_products_csv()
+            except ValueError:
+                print("Invalid Character")
+        elif option == 3:
             try:
                 id_product = input("Select an Id_product: ")
                 if id_product.lower() == 'quit':
@@ -47,7 +60,7 @@ while (True):
             except ValueError:
                 print("Invalid Character")
                  
-        elif option == 3:
+        elif option == 4:
             
             amount_products_to_insert = int(input("How Many random inserts do you want? -> "))
             i = 0
@@ -79,12 +92,14 @@ while (True):
             print('')
             cnx.commit()
             
-        elif option == 4:
+        elif option == 5:
             print(f"{wf.quantity_of_products()} products")
             for i in range(1,wf.quantity_of_products()+1):
                 product = wf.select_a_product(i)
                 print(f"{i}-{product[1]} -> {wf.calculate_price(i,1)[0]}$ each one. Total: {wf.calculate_price(i,product[4])[0]}$")
-        elif option == 5: 
+        
+        
+        elif option == 6: 
             try:
                 id_product = int(input("Select an Id_product to change price: "))
                 product = wf.select_a_product(id_product)
@@ -101,7 +116,7 @@ while (True):
                     print(f"Price of {product[1]} its the same")
             except ValueError:
                 print("Invalid Character")
-        elif option == 6:
+        elif option == 7:
             
             product_name = input("New Product Name: ")
             description = input("Description: ")
@@ -119,13 +134,15 @@ while (True):
                 print(f"id: {supplier[0]} - {supplier[1]}")
             id_supplier = int(input("choose a Supplier: "))
             wf.create_product(product_name,description,price,id_supplier,id_category)
-            print(f"{product_name} with id: {wf.quantity_of_products()}added to the system")
+            print(f"{product_name} with id: {wf.quantity_of_products()} added to the system")
             
-        elif option == 7:
-            print("Leaving program")
+        elif option.lower() == 'c':
+            wf.clear_console()
+        elif option.lower() == 'q':
+            wf.goodbye()
             break
     except ValueError:
         print("Invalid character, choose an option")
-cnx.close()
+
  
     

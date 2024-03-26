@@ -2,6 +2,7 @@ import mysql.connector
 import random
 import pandas as pd
 
+
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(
@@ -22,12 +23,14 @@ def menu():
                 ▀▄▀▄▀ █▀█ █▀▄ ██▄ █▀█ █▄█ █▄█ ▄█ ██▄ ▄█ ░█░ ▄█
                 
                   1 - Info of a product 
-                  2 - Select a Product ID & Calculate Price
-                  3 - Insert N randon products 
-                  4 - Show all prices
-                  5 - Change price of a product 
-                  6 - Create a product
-                  7 - Quit
+                  2 - Info of all products
+                  3 - Select a Product ID & Calculate Price
+                  4 - Insert N randon products 
+                  5 - Show all prices
+                  6 - Change price of a product 
+                  7 - Create a product
+                  C - Clear Console
+                  Q - Quit
                   
                 """)
 def quantity_of_products():
@@ -37,7 +40,20 @@ def quantity_of_products():
     result = cursor.fetchone()[0]
     return result
 
-
+def write_products_csv():
+    
+    
+    result = select_all_products()
+    df = pd.DataFrame(result, columns=['id_product', 'product_name', 'description', 'price', 'quantity', 'category', 'Supplier'])
+    df.to_csv('products.csv', index=False)
+    print("File created successfully")
+    # CREAR ARCHIVO CSV CON LOS PRODUCTOS
+    
+    
+    
+def clear_console():
+    print("\n"*100)
+    
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
     return random_quantity
@@ -51,6 +67,13 @@ def select_a_product(id_product):
     cursor = cnx.cursor()
     cursor.execute(f"SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,SP.name as Supplier FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier where PR.id_product = {id_product} group by id_product")
     result = cursor.fetchone()
+    return result
+  
+def select_all_products():
+    cnx = connect_to_db()
+    cursor = cnx.cursor()
+    cursor.execute("SELECT PR.id_product,PR.product_name,PR.description ,PR.price,INV.quantity,CT.category,SP.name as Supplier FROM products PR JOIN categories CT ON	CT.id_category = PR.id_category JOIN inventory INV ON INV.id_product = PR.id_product JOIN suppliers SP ON SP.id_supplier = PR.id_supplier group by id_product")
+    result = cursor.fetchall()
     return result
 
 def calculate_price(id_product,quantity):
@@ -81,8 +104,17 @@ def stock_movements(id_product):
     result = cursor.fetchall()
     return result
 
+def goodbye():
+    cursor.close()
+    cnx.close()
+    print(r"""
+░░░░░░░░░░░░░┌┬─┬┬┐┌┬──┐░▄▄▄░▄▄▄░░░░░░░░
+░░░░░░░░░░░░░│││││└┘│──┤░█░▀█▀░█░░░░░░░░
+░░░░░░░░░░░░░│││││┌┐├──│░▀█░░░█▀░░░░░░░░
+░░░░░░░░░░░░░└─┴─┴┘└┴──┘░░░█▄█░░░░░░░░░░
+          """)
 # PRUEBAS
 # product_id = int(input("Enter a product id: "))
 # print(f"Stock Movements of {product_id}")
 # for stock_mov in stock_movements(product_id):
-    print(f"{stock_mov[2]} {stock_mov[3]} {stock_mov[4]} {stock_mov[5]}")
+#    print(f"{stock_mov[2]} {stock_mov[3]} {stock_mov[4]} {stock_mov[5]}")
