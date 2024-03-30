@@ -105,7 +105,7 @@ while (True):
                 product = wf.select_a_product(id_product)
                 print(F"Current price: {product[3]}$")
                 new_price = float(input(f"New price for {product[1]} -> "))
-                while new_price < 0:
+                while (new_price < 0):
                     new_price = float(input("Price can't be negative -> "))
                 wf.change_price(id_product,new_price)
                 if new_price > product[3]:

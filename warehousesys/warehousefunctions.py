@@ -3,6 +3,7 @@ import random
 import pandas as pd
 
 
+
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(
@@ -42,18 +43,15 @@ def quantity_of_products():
 
 def write_products_csv():
     
-    
     result = select_all_products()
     df = pd.DataFrame(result, columns=['id_product', 'product_name', 'description', 'price', 'quantity', 'category', 'Supplier'])
     df.to_csv('products.csv', index=False)
     print("File created successfully")
-    # CREAR ARCHIVO CSV CON LOS PRODUCTOS
     
-    
-    
-def clear_console():
-    print("\n"*100)
-    
+def clear_console(): ## clear console
+    print("\n" * 100)
+ 
+   
 def choose_random_quantity(min,max):
     random_quantity = random.randint(min,max)
     return random_quantity
@@ -113,6 +111,7 @@ def goodbye():
 ░░░░░░░░░░░░░│││││┌┐├──│░▀█░░░█▀░░░░░░░░
 ░░░░░░░░░░░░░└─┴─┴┘└┴──┘░░░█▄█░░░░░░░░░░
           """)
+
 # PRUEBAS
 # product_id = int(input("Enter a product id: "))
 # print(f"Stock Movements of {product_id}")
