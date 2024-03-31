@@ -4,12 +4,9 @@ import pandas as pd
 cnx = wf.connect_to_db()
 cursor = cnx.cursor()
 
-
 while (True):
-    try:
-        
+    try:       
         wf.menu()
-        
         option = input("Choose an Option -> ")
         if option.isdigit():
             option = int(option)
@@ -51,10 +48,10 @@ while (True):
                 
                 if  id_product <= wf.quantity_of_products() :       
                     
-                    productname = wf.select_a_product(id_product)[1]
-                    q = input(f"How many of {productname}? -> ")
+                    p_name = wf.get_name_of_product(id_product)[0]
+                    q = input("How many of {}? -> ".format(p_name))
                     price = wf.calculate_price(id_product,q)[0]
-                    print(f"{q} of {productname} -> {price}$ ")   
+                    print(f"{q} of {p_name} -> {price}$ ")   
                 else:
                     print(f"There's no product with id {id_product}")
             except ValueError:
@@ -70,7 +67,6 @@ while (True):
                 rand_product = wf.choose_random_product()
                 product = wf.select_a_product(rand_product)
                 
-                
                 productname =  product[1]
                 quantity = product[4] # Cantidades actuales del producto
                 
@@ -80,8 +76,7 @@ while (True):
                     rand_quantity = wf.choose_random_quantity(0,50)
                     while rand_quantity == 0:
                         rand_quantity = wf.choose_random_quantity(0,50)
-                        
-                    
+                            
                 cursor.callproc("add_stock_2",(rand_product,rand_quantity))
                 if rand_quantity > 0:
                         print(f"Product: {rand_product}- {product[1]} Added: {rand_quantity}")
@@ -101,7 +96,13 @@ while (True):
         
         elif option == 6: 
             try:
-                id_product = int(input("Select an Id_product to change price: "))
+                while True:
+                    id_product = int(input("Select an Id_product to change price: "))
+                    if id_product <= wf.quantity_of_products():
+                        break
+                    else:
+                        print(f"There's no product with id {id_product}")
+                
                 product = wf.select_a_product(id_product)
                 print(F"Current price: {product[3]}$")
                 new_price = float(input(f"New price for {product[1]} -> "))
@@ -135,12 +136,17 @@ while (True):
             id_supplier = int(input("choose a Supplier: "))
             wf.create_product(product_name,description,price,id_supplier,id_category)
             print(f"{product_name} with id: {wf.quantity_of_products()} added to the system")
-            
+        elif option == 8:
+                id = int(input("Enter a product id: "))
+                print(f"Stock Movements of {wf.get_name_of_product(id)[0]}")
+                for stack_mov in wf.stock_movements(id):
+                    print(f"{stack_mov[2]} {stack_mov[3]} -> {stack_mov[4]} = {stack_mov[5]}")
         elif option.lower() == 'c':
             wf.clear_console()
         elif option.lower() == 'q':
             wf.goodbye()
             break
+        input("Press Enter to continue")
     except ValueError:
         print("Invalid character, choose an option")
 

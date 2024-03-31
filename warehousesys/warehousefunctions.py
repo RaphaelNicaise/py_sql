@@ -30,6 +30,7 @@ def menu():
                   5 - Show all prices
                   6 - Change price of a product 
                   7 - Create a product
+                  8 - Show stock movements
                   C - Clear Console
                   Q - Quit
                   
@@ -102,6 +103,11 @@ def stock_movements(id_product):
     result = cursor.fetchall()
     return result
 
+def get_name_of_product(id_product):
+    cursor.execute(f"select product_name from products where id_product = {id_product}")
+    result = cursor.fetchone()
+    return result
+    
 def goodbye():
     cursor.close()
     cnx.close()
@@ -112,8 +118,4 @@ def goodbye():
 ░░░░░░░░░░░░░└─┴─┴┘└┴──┘░░░█▄█░░░░░░░░░░
           """)
 
-# PRUEBAS
-# product_id = int(input("Enter a product id: "))
-# print(f"Stock Movements of {product_id}")
-# for stock_mov in stock_movements(product_id):
-#    print(f"{stock_mov[2]} {stock_mov[3]} {stock_mov[4]} {stock_mov[5]}")
+print("Fucntions loaded successfully")
