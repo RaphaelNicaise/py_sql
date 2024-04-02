@@ -106,8 +106,8 @@ def stock_movements(id_product):
 def get_name_of_product(id_product):
     cursor.execute(f"select product_name from products where id_product = {id_product}")
     result = cursor.fetchone()
-    return result
-    
+    return result 
+
 def goodbye():
     cursor.close()
     cnx.close()

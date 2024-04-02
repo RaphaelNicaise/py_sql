@@ -41,7 +41,7 @@ while (True):
         elif option == 3:
             try:
                 id_product = input("Select an Id_product: ")
-                if id_product.lower() == 'quit':
+                if id_product.lower() == 'q':
                     print("Returning to menu")
                     break
                 id_product = int(id_product)
@@ -81,7 +81,7 @@ while (True):
                 if rand_quantity > 0:
                         print(f"Product: {rand_product}- {product[1]} Added: {rand_quantity}")
                 elif rand_quantity < 0:
-                    print(f"Product: {rand_product}- {product[1]} removed: {rand_quantity}")    
+                    print(f"Product: {rand_product}- {product[1]} removed: {-rand_quantity}")    
                         
                 i += 1    
             print('')
