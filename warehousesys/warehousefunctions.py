@@ -2,8 +2,6 @@ import mysql.connector
 import random
 import pandas as pd
 
-
-
 def connect_to_db():
     try:
         return mysql.connector.MySQLConnection(
